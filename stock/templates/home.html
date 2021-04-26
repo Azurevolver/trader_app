@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="{% url 'home' %}" method="POST" class="d-flex">
+        {% csrf_token %}
+        <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter stock number"
+               aria-label="Search"
+               name="stock_quote_input">
+        <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">Search</button>
+    </form>
+    <br/>
+
+    {% if res %}
+        {% if res == "StockQuoteRequestError" %}
+            <h1>The stock ticker symbol is invalid, please enter valid one.</h1>
+        {% else %}
+            {% for key, value in res.items %}
+                {{ key }}: {{ value }}<br/>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+

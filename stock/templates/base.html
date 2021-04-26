@@ -32,7 +32,7 @@
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="/">Crypto</a>
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">My Stock List</a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="/">Crypto</a>
@@ -47,11 +47,6 @@
 {#                    <a class="nav-link active text-white" aria-current="page" href="/about">About</a>#}
 {#                </li>#}
             </ul>
-            <form action="{%  url 'home' %}" method="POST" class="d-flex">
-                {% csrf_token %}
-                <input class="form-control me-2" type="search" placeholder="Enter stock number" aria-label="Search" name="stock_quote_input">
-                <button class="btn btn-outline-light" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </nav>
