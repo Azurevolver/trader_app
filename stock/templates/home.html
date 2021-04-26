@@ -9,14 +9,16 @@
     </form>
     <br/>
 
-    {% if res %}
+    {% if search_result %}
         {% if res == "StockQuoteRequestError" %}
             <h1>The stock ticker symbol is invalid, please enter valid one.</h1>
         {% else %}
-            {% for key, value in res.items %}
+            {% for key, value in search_result.items %}
                 {{ key }}: {{ value }}<br/>
             {% endfor %}
         {% endif %}
+    {% else %}
+        <h3 class="text-muted">Please type valid stock ticker.</h3>
     {% endif %}
 
 {% endblock %}

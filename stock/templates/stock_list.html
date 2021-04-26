@@ -13,6 +13,7 @@
         <table class="table table-hover">
             <thead class="table-dark">
             <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Symbol</th>
                 <th scope="col">Company Name</th>
                 <th scope="col">Latest Price</th>
@@ -29,20 +30,22 @@
             {% for stock in stock_symbol_list %}
 
                 <tr>
-                    <td>{{ stock }}</td>
-                    <td>apple inc</td>
-                    <td>134.54</td>
-                    <td>64,449,161</td>
-                    <td>1,897,449,161</td>
-                    <td>36%</td>
-                    <td>660.24</td>
-                    <td>152.49</td>
-                    <td>25%</td>
-                    {#                    <td><a href="{% url 'delete_stock' stock.id %}">Delete</a></td>#}
+                    <td>{{ stock.stock_id }}</td>
+                    <td>{{ stock.ticker }}</td>
+                    <td>{{ stock.company_name }}</td>
+                    <td>{{ stock.latest_price }}</td>
+                    <td>{{ stock.volume }} </td>
+                    <td>{{ stock.market_cap }} </td>
+                    <td>{{ stock.pe_ratio }} </td>
+                    <td>{{ stock.w52_high }} </td>
+                    <td>{{ stock.w52_low }} </td>
+                    <td>{{ stock.ytd_change }} </td>
+{#                    <td><a href="{% url 'delete_stock' stock.id %}">Delete</a></td>#}
+
                     <td>
                         <button type="button" class="btn btn-danger">
                             <a class="text-white" style="text-decoration: none !important"
-                               href="{% url 'delete_stock' stock.id %}">
+                               href="{% url 'delete_stock' stock.stock_id %}">
                                 Delete
                             </a>
                         </button>
