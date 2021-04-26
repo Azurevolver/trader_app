@@ -9,6 +9,7 @@ KEY = "pk_9274979738c74528ad6d76dc1c59296a"
 base_url = "https://cloud.iexapis.com"
 
 
+
 def home(request):
     stock_symbol = "aapl"
 
@@ -43,7 +44,7 @@ def add_stock(request):
 def delete_stock(request, stock_id):
     target_stock = Stock.objects.get(pk=stock_id)
     target_stock.delete()
-    messages.success(request, "Stock has been deleted successfully.")
+    messages.warning(request, "Stock has been deleted successfully.")
     return redirect('stock_list')
 
 

@@ -16,7 +16,7 @@
 <!-- Nav bar start-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #8D3BFD;">
     <div class="container-fluid">
-        <a class="navbar-brand text-white h2" >Trader</a>
+        <a class="navbar-brand text-white h2">Trader</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,11 +28,13 @@
         <br/>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <button type="button" class="nav-item btn btn-outline-light" style="margin-left: 5rem; border-color: transparent">
+                <button type="button" class="nav-item btn btn-outline-light"
+                        style="margin-left: 5rem; border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">My Stock List</a>
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">My Stock
+                        List</a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="/">Crypto</a>
@@ -40,12 +42,12 @@
                 <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'about' %}">About</a>
                 </button>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link active text-white" aria-current="page" href="/">Home</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link active text-white" aria-current="page" href="/about">About</a>#}
-{#                </li>#}
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link active text-white" aria-current="page" href="/">Home</a>#}
+                {#                </li>#}
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link active text-white" aria-current="page" href="/about">About</a>#}
+                {#                </li>#}
             </ul>
         </div>
     </div>
@@ -54,6 +56,18 @@
 
 <div class="container">
     <br/>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% block content %}
 
     {% endblock %}
