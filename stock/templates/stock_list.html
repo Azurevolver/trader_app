@@ -1,63 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="{% url 'add_stock' %}" method="POST" class="d-flex">
-        {% csrf_token %}
-        <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter ticker number" aria-label="Search"
-               name="ticker">
-        <button class="btn btn-outline-light" style="background-color: #8D3BFD;"  type="submit">Track this Stock</button>
-    </form>
-    <br/>
-
-    <h1>My stock list</h1>
-    {% if stock_symbol_list %}
-        <table class="table table-hover">
-            <thead class="table-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Symbol</th>
-                <th scope="col">Company Name</th>
-                <th scope="col">Latest Price</th>
-                <th scope="col">Volume</th>
-                <th scope="col">Market Cap</th>
-                <th scope="col">P/E ratio</th>
-                <th scope="col">W52 High</th>
-                <th scope="col">W52 Low</th>
-                <th scope="col">Ytd Change</th>
-                <th scope="col">Delete Stock</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for stock in stock_symbol_list %}
-
-                <tr>
-                    <td>{{ stock.stock_id }}</td>
-                    <td>{{ stock.ticker }}</td>
-                    <td>{{ stock.company_name }}</td>
-                    <td>{{ stock.latest_price }}</td>
-                    <td>{{ stock.volume }} </td>
-                    <td>{{ stock.market_cap }} </td>
-                    <td>{{ stock.pe_ratio }} </td>
-                    <td>{{ stock.w52_high }} </td>
-                    <td>{{ stock.w52_low }} </td>
-                    <td>{{ stock.ytd_change }} </td>
-{#                    <td><a href="{% url 'delete_stock' stock.id %}">Delete</a></td>#}
-
-                    <td>
-                        <button type="button" class="btn btn-danger">
-                            <a class="text-white" style="text-decoration: none !important"
-                               href="{% url 'delete_stock' stock.stock_id %}">
-                                Delete
-                            </a>
-                        </button>
-                    </td>
-                </tr>
-                <br/>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <h3 class="text-muted">Your stock ticker is empty</h3>
-    {% endif %}
-
+    <div class="container">
+        <div class="row">
+            <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">STOCK WATCH LIST</p>
+        </div>
+        <div class="row">
+            <form action="{% url 'add_stock' %}" method="POST" class="d-flex">
+                {% csrf_token %}
+                <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter ticker number"
+                       aria-label="Search"
+                       name="ticker">
+                <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">Track this
+                    Stock
+                </button>
+            </form>
+        </div>
+        <br/>
+        <div class="row">
+            {% if stock_symbol_list %}
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                    <tr>
+{#                        <th scope="col">ID</th>#}
+                        <th scope="col">Symbol</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Latest Price</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Market Cap</th>
+                        <th scope="col">P/E ratio</th>
+                        <th scope="col">W52 High</th>
+                        <th scope="col">W52 Low</th>
+                        <th scope="col">Ytd Change</th>
+                        <th scope="col">Delete Stock</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for stock in stock_symbol_list %}
+                        <tr>
+{#                            <td>{{ stock.stock_id }}</td>#}
+                            <td>{{ stock.ticker }}</td>
+                            <td>{{ stock.company_name }}</td>
+                            <td>{{ stock.latest_price }}</td>
+                            <td>{{ stock.volume }} </td>
+                            <td>{{ stock.market_cap }} </td>
+                            <td>{{ stock.pe_ratio }} </td>
+                            <td>{{ stock.w52_high }} </td>
+                            <td>{{ stock.w52_low }} </td>
+                            <td>{{ stock.ytd_change }} </td>
+                            <td>
+                                <button type="button" class="btn btn-danger">
+                                    <a class="text-white" style="text-decoration: none !important"
+                                       href="{% url 'delete_stock' stock.stock_id %}">
+                                        Delete
+                                    </a>
+                                </button>
+                            </td>
+                        </tr>
+                        <br/>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h3 class="text-muted">Your stock ticker is empty</h3>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 

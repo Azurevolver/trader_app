@@ -1,25 +1,119 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="{% url 'home' %}" method="POST" class="d-flex">
-        {% csrf_token %}
-        <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter stock number"
-               aria-label="Search"
-               name="stock_quote_input">
-        <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">Search</button>
-    </form>
-    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                <form action="{% url 'home' %}" method="POST" class="d-flex">
+                    {% csrf_token %}
+                    <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter stock number"
+                           aria-label="Search"
+                           name="stock_quote_input">
+                    <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">Search
+                    </button>
+                </form>
+                <br/>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
 
-    {% if search_result %}
-        {% if res == "StockQuoteRequestError" %}
-            <h1>The stock ticker symbol is invalid, please enter valid one.</h1>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">STOCK INFO</p>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                {% if stock_detail %}
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Company Name</th>
+                            <th scope="col">Latest Price</th>
+                            <th scope="col">Volume</th>
+                            <th scope="col">Market Cap</th>
+                            <th scope="col">P/E ratio</th>
+                            <th scope="col">W52 High</th>
+                            <th scope="col">W52 Low</th>
+                            <th scope="col">Ytd Change</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ stock_detail.symbol }}</td>
+                                <td>{{ stock_detail.companyName }}</td>
+                                <td>{{ stock_detail.latestPrice }}</td>
+                                <td>{{ stock_detail.volume }} </td>
+                                <td>{{ stock_detail.marketCap }} </td>
+                                <td>{{ stock_detail.peRatio }} </td>
+                                <td>{{ stock_detail.week52High }} </td>
+                                <td>{{ stock_detail.week52Low }} </td>
+                                <td>{{ stock_detail.ytdChange }} </td>
+                            </tr>
+                            <br/>
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h3 class="text-muted">Your stock ticker is empty</h3>
+                {% endif %}
+
+            </div>
+{#            <div class="col-sm-1"></div>#}
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">News</p>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        {% if search_result %}
+            {% if res == "StockNewsRequestError" %}
+                <h1>The stock ticker symbol is invalid, please enter valid one.</h1>
+            {% else %}
+                {% for news in search_result %}
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm">
+                            <div class="card" style="width: 60rem;">
+                                <img src="{{ news.image }}" class="card-img-top" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ news.headline }}</h5>
+                                    <p class="card-text">{{ news.datetime }}</p>
+                                    <p class="card-text">{{ news.summary }}</p>
+                                    <p class="card-text">Source: {{ news.source }}</p>
+                                    <a href="{{ news.url }}" class="btn btn-outline-light"
+                                       style="background-color: #8D3BFD;">
+                                        Read the whole story
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <br/>
+                    <br/>
+                    {#          {% for key, value in news.items %}#}
+                    {#          {{ key }}: {{ value }}<br/>#}
+                    {#          {% endfor %}#}
+                {% endfor %}
+            {% endif %}
         {% else %}
-            {% for key, value in search_result.items %}
-                {{ key }}: {{ value }}<br/>
-            {% endfor %}
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm">
+                    <h3 class="text-muted">Please type valid stock ticker.</h3>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
         {% endif %}
-    {% else %}
-        <h3 class="text-muted">Please type valid stock ticker.</h3>
-    {% endif %}
+    </div>
 
 {% endblock %}
 
