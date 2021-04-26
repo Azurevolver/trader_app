@@ -9,11 +9,52 @@
     <br/>
 
     <h1>My stock list</h1>
+    {% if stock_symbol_list %}
+        <table class="table table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Latest Price</th>
+                <th scope="col">Volume</th>
+                <th scope="col">Market Cap</th>
+                <th scope="col">P/E ratio</th>
+                <th scope="col">W52 High</th>
+                <th scope="col">W52 Low</th>
+                <th scope="col">Ytd Change</th>
+                <th scope="col">Delete Stock</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for stock in stock_symbol_list %}
 
-    {% for item in stock_symbol_list %}
-        {{ item }} | <a href="{%  url 'delete_stock' item.id %}">Delete Stock</a>
-        <br/>
-    {% endfor %}
+                <tr>
+                    <td>{{ stock }}</td>
+                    <td>apple inc</td>
+                    <td>134.54</td>
+                    <td>64,449,161</td>
+                    <td>1,897,449,161</td>
+                    <td>36%</td>
+                    <td>660.24</td>
+                    <td>152.49</td>
+                    <td>25%</td>
+                    {#                    <td><a href="{% url 'delete_stock' stock.id %}">Delete</a></td>#}
+                    <td>
+                        <button type="button" class="btn btn-danger">
+                            <a class="text-white" style="text-decoration: none !important"
+                               href="{% url 'delete_stock' stock.id %}">
+                                Delete
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                <br/>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3 class="text-muted">Your stock ticker is empty</h3>
+    {% endif %}
 
 {% endblock %}
 
