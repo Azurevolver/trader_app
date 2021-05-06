@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        {% if stock %}
+            <div class="container">
+                <div class="row">
+                    <div class="image-parent">
+                        <img src="{{ stock.logo_url }}" class="img-thumbnail" width="15%" height="auto">
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">Stock Symbol</p>
+                    </div>
+                    <div class="col-10">{{ stock.ticker }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">Company Name</p>
+                    </div>
+                    <div class="col-10">{{ stock.company_name }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">Market Cap</p>
+                    </div>
+                    <div class="col-10">{{ stock.market_cap }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">Price-to-Earning ratio</p>
+                    </div>
+                    <div class="col-10">{{ stock.pe_ratio }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">52 Week Low</p>
+                    </div>
+                    <div class="col-10">{{ stock.w52_low }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">52 Week High</p>
+                    </div>
+                    <div class="col-10">{{ stock.w52_high }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="fw-bolder">Year today change</p>
+                    </div>
+                    <div class="col-10">{{ stock.ytd_change }}</div>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+{% endblock %}

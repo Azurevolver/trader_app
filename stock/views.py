@@ -1,8 +1,11 @@
 from decimal import Decimal
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import json
 import requests
+from django.views import View
+from django.views.generic import DetailView
+
 from stock.models import Stock
 from django.contrib import messages
 from .utilities import process_stock_raw_data
@@ -45,7 +48,47 @@ def home(request):
 
 def stock_list(request):
     stock_symbol_list = Stock.objects.all()
+
+    for stock in stock_symbol_list:
+        stock_symbol = stock.ticker
+        price_url = base_url + "/stable/stock/" + stock_symbol + "/quote/latestPrice?token=" + KEY
+        raw_res = requests.get(price_url)
+
+        try:
+            latest_quote_price = json.loads(raw_res.content)
+            # print("[DEBUG] res price: ")
+            # print(res)
+            stock.latest_price = latest_quote_price
+        except Exception as e:
+            print("[DEBUG] error occurs on fetch price")
+
     return render(request, 'stock_list.html', {'stock_symbol_list': stock_symbol_list})
+
+
+class StockDetail(View):
+    def get(self, request, pk):
+        stock_info = get_object_or_404(
+            Stock,
+            pk=pk
+        )
+
+        request_logo_url = base_url + "/stable/stock/" + stock_info.ticker + "/logo?token=" + KEY
+        raw_res = requests.get(request_logo_url)
+        logo = json.loads(raw_res.content)
+        stock_info.logo_url = logo["url"]
+        return render(
+            request,
+            'stock_detail.html',
+            {'stock': stock_info}
+        )
+
+# class StockDetail(DetailView):
+#     model = Stock
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # stock_info = self.get_object()
+#         return context
 
 
 def add_stock(request):
@@ -90,3 +133,4 @@ def delete_stock(request, stock_id):
 
 def about(request):
     return render(request, 'about.html', {})
+

@@ -26,12 +26,11 @@
                         <th scope="col">Company Name</th>
                         <th scope="col">Latest Price</th>
                         <th scope="col">Volume</th>
-                        <th scope="col">Market Cap</th>
-                        <th scope="col">P/E ratio</th>
                         <th scope="col">W52 High</th>
                         <th scope="col">W52 Low</th>
                         <th scope="col">Ytd Change</th>
-                        <th scope="col">Delete Stock</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,14 +39,20 @@
 {#                            <td>{{ stock.stock_id }}</td>#}
                             <td>{{ stock.ticker }}</td>
                             <td>{{ stock.company_name }}</td>
-                            <td>{{ stock.latest_price }}</td>
+                            <td>$ {{ stock.latest_price }}</td>
                             <td>{{ stock.volume }} </td>
-                            <td>{{ stock.market_cap }} </td>
-                            <td>{{ stock.pe_ratio }} </td>
                             <td>{{ stock.w52_high }} </td>
                             <td>{{ stock.w52_low }} </td>
                             <td>{{ stock.ytd_change }} </td>
                             <td>
+                                <button type="button" class="btn btn-outline-light" style="background-color: #8D3BFD;">
+                                    <a class="text-white" style="text-decoration: none !important"
+                                       href="{{ stock.get_absolute_url }}">
+                                        Detail
+                                    </a>
+                                </button>
+                            </td>
+                             <td>
                                 <button type="button" class="btn btn-danger">
                                     <a class="text-white" style="text-decoration: none !important"
                                        href="{% url 'delete_stock' stock.stock_id %}">

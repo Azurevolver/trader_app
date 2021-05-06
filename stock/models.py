@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Stock(models.Model):
@@ -15,3 +16,7 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.ticker
+
+    def get_absolute_url(self):
+        return reverse("stock_detail_url", kwargs={'pk': self.pk})
+
