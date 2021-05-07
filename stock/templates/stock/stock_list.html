@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'stock/base.html' %}
 {% block content %}
     <div class="container">
         <div class="row">
@@ -41,9 +41,9 @@
                             <td>{{ stock.company_name }}</td>
                             <td>$ {{ stock.latest_price }}</td>
                             <td>{{ stock.volume }} </td>
-                            <td>{{ stock.w52_high }} </td>
-                            <td>{{ stock.w52_low }} </td>
-                            <td>{{ stock.ytd_change }} </td>
+                            <td>$ {{ stock.w52_high }} </td>
+                            <td>$ {{ stock.w52_low }} </td>
+                            <td>{{ stock.ytd_change }} % </td>
                             <td>
                                 <button type="button" class="btn btn-outline-light" style="background-color: #8D3BFD;">
                                     <a class="text-white" style="text-decoration: none !important"
@@ -66,7 +66,7 @@
                     </tbody>
                 </table>
             {% else %}
-                <h3 class="text-muted">Your stock ticker is empty</h3>
+                <h3 class="text-muted">Your stock list is empty, let's add some stock!</h3>
             {% endif %}
         </div>
     </div>

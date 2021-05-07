@@ -1,0 +1,59 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">TO DO LIST</p>
+        </div>
+        <div class="row">
+            <form action="{% url 'to_do_item_create_url' %}" method="POST" class="d-flex">
+                {% csrf_token %}
+                <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">
+                    Add New To-Do Item
+                </button>
+            </form>
+        </div>
+        <br/>
+        {% if  object_list %}
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Content</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Detail</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for to_do_item in object_list %}
+                    <tr>
+                        {% if to_do_item.is_item_checked %}
+                            <td>
+                                <p class="fs-3 fw-bolder lh-1" style="color: green;">√</p>
+                            </td>
+                        {% else %}
+                            <td>
+                                <p class="fs-3 fw-bolder lh-1" style="color: red;">X</p>
+                            </td>
+                        {% endif %}
+
+                        <td>{{ to_do_item.title }}</td>
+                        <td>{{ to_do_item.content }}</td>
+                        <td>{{ to_do_item.creation_date }}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-light" style="background-color: #8D3BFD;">
+                                <a class="text-white" style="text-decoration: none !important"
+                                   href="{{ to_do_item.get_absolute_url }}">
+                                    Detail
+                                </a>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3 class="text-muted">Your to-do list is empty, let's add some!</h3>
+        {% endif %}
+    </div>
+{% endblock %}

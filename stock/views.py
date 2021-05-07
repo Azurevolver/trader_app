@@ -1,15 +1,15 @@
-from decimal import Decimal
-
 from django.shortcuts import render, redirect, get_object_or_404
 import json
 import requests
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView
-
-from stock.models import Stock
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from stock.models import Stock, ToDoItem
 from django.contrib import messages
+from .forms import ToDoItemForm
 from .utilities import process_stock_raw_data
 from datetime import datetime
+from decimal import Decimal
 
 KEY = "pk_9274979738c74528ad6d76dc1c59296a"
 base_url = "https://cloud.iexapis.com"
@@ -43,7 +43,7 @@ def home(request):
     except Exception as e:
         stock_detail = "StockQuoteRequestError"
 
-    return render(request, 'home.html', {"search_result": search_result, "stock_detail": stock_detail})
+    return render(request, 'stock/home.html', {"search_result": search_result, "stock_detail": stock_detail})
 
 
 def stock_list(request):
@@ -62,7 +62,7 @@ def stock_list(request):
         except Exception as e:
             print("[DEBUG] error occurs on fetch price")
 
-    return render(request, 'stock_list.html', {'stock_symbol_list': stock_symbol_list})
+    return render(request, 'stock/stock_list.html', {'stock_symbol_list': stock_symbol_list})
 
 
 class StockDetail(View):
@@ -76,19 +76,12 @@ class StockDetail(View):
         raw_res = requests.get(request_logo_url)
         logo = json.loads(raw_res.content)
         stock_info.logo_url = logo["url"]
+
         return render(
             request,
-            'stock_detail.html',
+            'stock/stock_detail.html',
             {'stock': stock_info}
         )
-
-# class StockDetail(DetailView):
-#     model = Stock
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # stock_info = self.get_object()
-#         return context
 
 
 def add_stock(request):
@@ -121,7 +114,7 @@ def add_stock(request):
 
         all_tracking_stocks = Stock.objects.all().order_by('stock_id')
 
-    return render(request, 'stock_list.html', {"stock_symbol_list": all_tracking_stocks})
+    return render(request, 'stock/stock_list.html', {"stock_symbol_list": all_tracking_stocks})
 
 
 def delete_stock(request, stock_id):
@@ -132,5 +125,33 @@ def delete_stock(request, stock_id):
 
 
 def about(request):
-    return render(request, 'about.html', {})
+    return render(request, 'stock/about.html', {})
 
+
+class ToDoItemList(ListView):
+    model = ToDoItem
+
+
+class ToDoItemCreate(CreateView):
+    form_class = ToDoItemForm
+    model = ToDoItem
+    success_url = '/todoitem_list/'
+
+
+class ToDoItemDetail(DetailView):
+    model = ToDoItem
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        return context
+
+
+class ToDoItemUpdate(UpdateView):
+    form_class = ToDoItemForm
+    model = ToDoItem
+    template_name = 'stock/todoitem_update.html'
+
+
+class ToDoItemDelete(DeleteView):
+    model = ToDoItem
+    success_url = reverse_lazy('to_do_item_list_url')

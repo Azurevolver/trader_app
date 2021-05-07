@@ -20,3 +20,19 @@ class Stock(models.Model):
     def get_absolute_url(self):
         return reverse("stock_detail_url", kwargs={'pk': self.pk})
 
+
+class ToDoItem(models.Model):
+    todo_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=20)
+    content = models.CharField(max_length=200)
+    creation_date = models.DateField()
+    is_item_checked = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("to_do_item_detail_url", kwargs={'pk': self.pk})
+
+    def get_update_url(self):
+        return reverse('to_do_item_update_url', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('to_do_item_delete_url', kwargs={'pk': self.pk})

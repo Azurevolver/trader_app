@@ -1,5 +1,23 @@
 from django import forms
-from .models import Stock
+from .models import Stock, ToDoItem
+
+
+class ToDoItemForm(forms.ModelForm):
+    creation_date = forms.DateField(label='Select Date', widget=forms.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = ToDoItem
+        fields = ['todo_id', 'title', 'content', 'creation_date', 'is_item_checked']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['creation_date'].widget.attrs.update({'class': 'special'})
+
+    def clean_title(self):
+        return self.cleaned_data['title'].strip()
+
+    def clean_content(self):
+        return self.cleaned_data['content'].strip()
 
 
 class StockForm(forms.ModelForm):

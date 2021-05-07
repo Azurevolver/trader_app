@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'stock/base.html' %}
 {% block content %}
     <div class="container">
         {% if stock %}
@@ -47,12 +47,11 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="fw-bolder">Year today change</p>
+                        <p class="fw-bolder">Year-to-date change</p>
                     </div>
                     <div class="col-10">{{ stock.ytd_change }}</div>
                 </div>
             </div>
-
         {% endif %}
     </div>
 {% endblock %}

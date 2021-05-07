@@ -1,0 +1,59 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form action="{{ todoitem.get_delete_url }}"
+                  method="post">
+                {% csrf_token %}
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-bolder">Title</p>
+                        </div>
+                        <div class="col-10">{{ todoitem.title }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-bolder">Content</p>
+                        </div>
+                        <div class="col-10">{{ todoitem.content }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-bolder">Created Date</p>
+                        </div>
+                        <div class="col-10">{{ todoitem.creation_date }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-bolder">Completion Status</p>
+                        </div>
+                        <div class="col-10">
+                            {% if todoitem.is_item_checked %}
+                                <td>
+                                    <p class="fs-3 fw-bolder lh-1" style="color: green;">√</p>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <p class="fs-3 fw-bolder lh-1" style="color: red;">X</p>
+                                </td>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <p class="fs-4 fw-bolder lh-base" style="color: black;">
+                    Are you sure that you want to delete this to-do item?
+                </p>
+                <button class="btn btn-outline-light"
+                        onclick="window.history.back();" type="button"
+                        style="background-color: #8D3BFD;">Cancel
+                </button>
+                <button class="btn btn-outline-light"
+                        style="background-color: red;" type="submit">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

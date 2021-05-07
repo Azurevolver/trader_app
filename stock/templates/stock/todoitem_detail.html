@@ -1,0 +1,67 @@
+{% extends 'stock/base.html' %}
+{% block content %}
+    {% if todoitem %}
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <p class="fw-bolder">Title</p>
+                </div>
+                <div class="col-10">{{ todoitem.title }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <p class="fw-bolder">Content</p>
+                </div>
+                <div class="col-10">{{ todoitem.content }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <p class="fw-bolder">Created Date</p>
+                </div>
+                <div class="col-10">{{ todoitem.creation_date }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <p class="fw-bolder">Completion Status</p>
+                </div>
+                <div class="col-10">
+                    {% if todoitem.is_item_checked %}
+                        <td>
+                            <p class="fs-3 fw-bolder lh-1" style="color: green;">√</p>
+                        </td>
+                    {% else %}
+                        <td>
+                            <p class="fs-3 fw-bolder lh-1" style="color: red;">X</p>
+                        </td>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-outline-light" style="background-color: #8D3BFD;">
+                        <a href="{{ todoitem.get_update_url }}" class="text-white"
+                           style="text-decoration: none !important">
+                            Update
+                        </a>
+                    </button>
+                </div>
+                <div class="col-6">
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-danger">
+                        <a href="{{ todoitem.get_delete_url }}" class="text-white"
+                           style="text-decoration: none !important">
+                            Delete
+                        </a>
+                    </button>
+                </div>
+                <div class="col-6">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

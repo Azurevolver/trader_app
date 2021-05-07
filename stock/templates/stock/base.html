@@ -16,30 +16,33 @@
 <!-- Nav bar start-->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #8D3BFD;">
     <div class="container-fluid">
-        <a class="navbar-brand text-white h2">Trader</a>
+        <a class="navbar-brand text-white h2">eTrader</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <span class="navbar-text text-white">
-            Invest your future
+            - Invest your future
         </span>
         <br/>
         <br/>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <button type="button" class="nav-item btn btn-outline-light"
+                <button type="button" class="nav-item btn btn-outline-dark"
                         style="margin-left: 5rem; border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
                 </button>
-                <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">My Stock
-                        List</a>
+                <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">
+                        My Stock List
+                    </a>
                 </button>
-                <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="/">Crypto</a>
+                <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'to_do_item_list_url' %}">
+                        To Do List
+                    </a>
                 </button>
-                <button type="button" class="nav-item btn btn-outline-light" style="border-color: transparent">
+                <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'about' %}">About</a>
                 </button>
                 {#                <li class="nav-item">#}
