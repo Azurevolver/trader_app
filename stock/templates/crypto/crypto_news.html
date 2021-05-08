@@ -1,0 +1,89 @@
+{% extends 'stock/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form action="{% url 'crypto_news' %}" method="POST" class="d-flex">
+                {% csrf_token %}
+                <input class="form-control me-2" style="width: 15rem" type="search"
+                       placeholder="Enter crypto symbol"
+                       aria-label="Search"
+                       name="crypto_input">
+                <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">
+                    Search
+                </button>
+            </form>
+            <br/>
+
+        </div>
+
+        <div class="row">
+            <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">CRYPTO INFO</p>
+        </div>
+
+        <div class="row">
+            {% if crypto_exist %}
+                {% if crypto_social_stats %}
+                    <table class="table">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">Abbreviation</th>
+                            <th scope="col">CoinName</th>
+                            <th scope="col">Price (USD)</th>
+                            <th scope="col">24 HR High</th>
+                            <th scope="col">24 HR Low</th>
+                            <th scope="col">CryptoCompare score</th>
+                            <th scope="col">Twitter followers</th>
+                            <th scope="col">Reddit posts/ day</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ crypto_social_stats.Data.General.Name }}</td>
+                            <td>{{ crypto_social_stats.Data.General.CoinName }}</td>
+                            <td>$ {{ crypto_price.PRICE }}</td>
+                            <td>$ {{ crypto_price.HIGH24HOUR }}</td>
+                            <td>$ {{ crypto_price.LOW24HOUR }}</td>
+                            <td>{{ crypto_social_stats.Data.CryptoCompare.Points }}</td>
+                            <td>{{ crypto_social_stats.Data.Twitter.followers }}</td>
+                            <td>{{ crypto_social_stats.Data.Reddit.posts_per_day }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% else %}
+                <h3 class="text-muted">Please enter a valid crypto symbol.</h3>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <p class="fs-1 fw-bolder lh-base" style="color: #8D3BFD;">crypto NEWS</p>
+        </div>
+        <div class="row">
+            {% if crypto_news_results.Data %}
+                {% for news in crypto_news_results.Data %}
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ news.imageurl }}" class="card-img-top" alt="">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ news.title }}</h5>
+                                    <p class="card-text">{{ news.body }}</p>
+                                    <p class="card-text">Source: {{ news.source }}</p>
+                                    <a href="{{ news.url }}" class="btn btn-outline-light"
+                                       style="background-color: #8D3BFD;">
+                                        Read the whole story
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

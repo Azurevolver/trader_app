@@ -12,7 +12,15 @@ from datetime import datetime
 from decimal import Decimal
 
 KEY = "pk_9274979738c74528ad6d76dc1c59296a"
-base_url = "https://cloud.iexapis.com"
+BASE_URL = "https://cloud.iexapis.com"
+CRYPTO_BASE_URL = "https://min-api.cryptocompare.com"
+CRYPTO_KEY = "5aa48fdb6bdae90671e8c0775404bc4e5e253f02b8d7b348aed9168a12f8e239"
+CRYPTO_SYMBOL_URL = CRYPTO_BASE_URL + "/data/blockchain/list?&api_key=" + CRYPTO_KEY
+
+"""
+-----------------------------------------------------------------------------------------
+Stock-related views
+"""
 
 
 def home(request):
@@ -21,7 +29,7 @@ def home(request):
     if request.method == "POST":
         stock_symbol = request.POST["stock_quote_input"]
 
-    news_url = base_url + "/stable/stock/" + stock_symbol + "/news/last?token=" + KEY
+    news_url = BASE_URL + "/stable/stock/" + stock_symbol + "/news/last?token=" + KEY
     raw_res = requests.get(news_url)
     try:
         search_result = json.loads(raw_res.content)
@@ -33,7 +41,7 @@ def home(request):
     except Exception as e:
         res = "StockNewsRequestError"
 
-    url = base_url + "/stable/stock/" + stock_symbol + "/quote?token=" + KEY
+    url = BASE_URL + "/stable/stock/" + stock_symbol + "/quote?token=" + KEY
     raw_res = requests.get(url)
     stock_detail = {}
 
@@ -51,7 +59,7 @@ def stock_list(request):
 
     for stock in stock_symbol_list:
         stock_symbol = stock.ticker
-        price_url = base_url + "/stable/stock/" + stock_symbol + "/quote/latestPrice?token=" + KEY
+        price_url = BASE_URL + "/stable/stock/" + stock_symbol + "/quote/latestPrice?token=" + KEY
         raw_res = requests.get(price_url)
 
         try:
@@ -72,7 +80,7 @@ class StockDetail(View):
             pk=pk
         )
 
-        request_logo_url = base_url + "/stable/stock/" + stock_info.ticker + "/logo?token=" + KEY
+        request_logo_url = BASE_URL + "/stable/stock/" + stock_info.ticker + "/logo?token=" + KEY
         raw_res = requests.get(request_logo_url)
         logo = json.loads(raw_res.content)
         stock_info.logo_url = logo["url"]
@@ -87,7 +95,7 @@ class StockDetail(View):
 def add_stock(request):
     if request.method == "POST":
         stock_symbol = request.POST["ticker"]
-        url = base_url + "/stable/stock/" + stock_symbol + "/quote?token=" + KEY
+        url = BASE_URL + "/stable/stock/" + stock_symbol + "/quote?token=" + KEY
         raw_res = requests.get(url)
         response_content = {}
         all_tracking_stocks = {}
@@ -109,8 +117,13 @@ def add_stock(request):
             stock_data.save()
             messages.success(request, stock_symbol.upper() + "is added to your watch list successfully.")
         except Exception as e:
+            displayed_warning_msg = "Please enter a valid stock symbol."
+            error_msg = e.__str__()
+            if error_msg == "UNIQUE constraint failed: stock_stock.company_name":
+                displayed_warning_msg = "The ticker symbol is already existed, please enter a new one!"
+
             all_tracking_stocks = "StockQuoteRequestError"
-            messages.warning(request, "Please enter a valid stock symbol.")
+            messages.warning(request, displayed_warning_msg)
 
         all_tracking_stocks = Stock.objects.all().order_by('stock_id')
 
@@ -124,8 +137,75 @@ def delete_stock(request, stock_id):
     return redirect('stock_list')
 
 
-def about(request):
-    return render(request, 'stock/about.html', {})
+"""
+-----------------------------------------------------------------------------------------
+Crypto-related views
+"""
+
+
+def crypto_news(request):
+    crypto_symbol = "BTC"
+    crypto_news_results = {}
+    crypto_exist = False
+    if request.method == "POST":
+        crypto_symbol = str(request.POST["crypto_input"]).upper()
+
+    # detect whether crypto symbol exist
+    crypto_id = 1182
+    raw_res = requests.get(CRYPTO_SYMBOL_URL)
+    try:
+        crypto_symbol_info_results = json.loads(raw_res.content)
+        if "Data" in crypto_symbol_info_results:
+            if crypto_symbol in crypto_symbol_info_results["Data"]:
+                print(crypto_symbol_info_results["Data"][crypto_symbol])
+                crypto_id = crypto_symbol_info_results["Data"][crypto_symbol]["id"]
+                crypto_exist = True
+            else:
+                crypto_news_results = "CryptoSymBolNotExistError"
+
+    except Exception as e:
+        crypto_news_results = "CryptoSymBolNotExistError"
+
+    # fetch crypto stats within social media
+    crypto_social_stats = {}
+    social_stats_url = CRYPTO_BASE_URL + "/data/social/coin/latest?coinId=" + str(crypto_id) + "&api_key=" + CRYPTO_KEY
+    raw_res = requests.get(social_stats_url)
+    try:
+        crypto_social_stats = json.loads(raw_res.content)
+    except Exception as e:
+        crypto_social_stats = "CryptoStatusNotExistError"
+
+    # fetch price
+    price_url = CRYPTO_BASE_URL + "/data/pricemultifull?fsyms=" + crypto_symbol + "&tsyms=USD&api_key=" + CRYPTO_KEY
+    raw_res = requests.get(price_url)
+    crypto_price = {}
+    try:
+        raw_price_dict = json.loads(raw_res.content)
+        if "RAW" in raw_price_dict :
+            if crypto_symbol in raw_price_dict["RAW"]:
+                crypto_price = raw_price_dict["RAW"][crypto_symbol]["USD"]
+    except Exception as e:
+        crypto_price = "CryptoPriceNotExistError"
+
+    # fetch crypto news
+    news_url = CRYPTO_BASE_URL + "/data/v2/news/?categories=" + crypto_symbol + "&api_key=" + CRYPTO_KEY
+    raw_res = requests.get(news_url)
+    try:
+        crypto_news_results = json.loads(raw_res.content)
+    except Exception as e:
+        crypto_news_results = "CryptoNewsRequestError"
+
+    return render(request, 'crypto/crypto_news.html', {
+                        "crypto_exist": crypto_exist,
+                        "crypto_news_results": crypto_news_results,
+                        "crypto_social_stats": crypto_social_stats,
+                        "crypto_price": crypto_price
+                  })
+
+"""
+-----------------------------------------------------------------------------------------
+To-do item related views
+"""
 
 
 class ToDoItemList(ListView):
@@ -155,3 +235,7 @@ class ToDoItemUpdate(UpdateView):
 class ToDoItemDelete(DeleteView):
     model = ToDoItem
     success_url = reverse_lazy('to_do_item_list_url')
+
+
+def about(request):
+    return render(request, 'stock/about.html', {})

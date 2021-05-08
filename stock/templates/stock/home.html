@@ -6,7 +6,7 @@
             <div class="col-sm">
                 <form action="{% url 'home' %}" method="POST" class="d-flex">
                     {% csrf_token %}
-                    <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter stock number"
+                    <input class="form-control me-2" style="width: 15rem" type="search" placeholder="Enter stock ticker"
                            aria-label="Search"
                            name="stock_quote_input">
                     <button class="btn btn-outline-light" style="background-color: #8D3BFD;" type="submit">
@@ -61,9 +61,7 @@
                 {% else %}
                     <h3 class="text-muted">Your stock ticker is empty</h3>
                 {% endif %}
-
             </div>
-{#            <div class="col-sm-1"></div>#}
         </div>
         <div class="row">
             <br/>
@@ -101,9 +99,6 @@
                     </div>
                     <br/>
                     <br/>
-                    {#          {% for key, value in news.items %}#}
-                    {#          {{ key }}: {{ value }}<br/>#}
-                    {#          {% endfor %}#}
                 {% endfor %}
             {% endif %}
         {% else %}

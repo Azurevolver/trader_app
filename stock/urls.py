@@ -9,6 +9,7 @@ urlpatterns = [
     path('delete/<stock_id>', views.delete_stock, name="delete_stock"),
     path('stock/<int:pk>/', StockDetail.as_view(), name='stock_detail_url'),
     path('todoitem_list/', ToDoItemList.as_view(), name='to_do_item_list_url'),
+    path('crypto_news/', views.crypto_news, name="crypto_news"),
     path('to_do_item/<int:pk>/', ToDoItemDetail.as_view(), name='to_do_item_detail_url'),
     path('to_do_item/create/', ToDoItemCreate.as_view(), name='to_do_item_create_url'),
     path('to_do_item/<int:pk>/update/', ToDoItemUpdate.as_view(), name='to_do_item_update_url'),

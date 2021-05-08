@@ -30,27 +30,26 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <button type="button" class="nav-item btn btn-outline-dark"
                         style="margin-left: 5rem; border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">STOCK NEWS</a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'stock_list' %}">
-                        My Stock List
+                        MY STOCK LIST
+                    </a>
+                </button>
+                <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'crypto_news' %}">
+                        CRYPTO CENTER
                     </a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'to_do_item_list_url' %}">
-                        To Do List
+                        TO-DO
                     </a>
                 </button>
                 <button type="button" class="nav-item btn btn-outline-dark" style="border-color: transparent">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'about' %}">About</a>
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'about' %}">ABOUT</a>
                 </button>
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link active text-white" aria-current="page" href="/">Home</a>#}
-                {#                </li>#}
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link active text-white" aria-current="page" href="/about">About</a>#}
-                {#                </li>#}
             </ul>
         </div>
     </div>
@@ -65,7 +64,8 @@
             <div class="container-fluid p-0">
                 <div class="alert {{ message.tags }} alert-dismissible" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
         {% endfor %}
