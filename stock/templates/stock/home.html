@@ -26,25 +26,26 @@
             <div class="col-sm-1"></div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm">
-                {% if stock_detail %}
-                    <table class="table">
-                        <thead class="table-light">
-                        <tr>
-                            <th scope="col">Symbol</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">Latest Price</th>
-                            <th scope="col">Volume</th>
-                            <th scope="col">Market Cap</th>
-                            <th scope="col">P/E ratio</th>
-                            <th scope="col">W52 High</th>
-                            <th scope="col">W52 Low</th>
-                            <th scope="col">Ytd Change</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+        {% if search_result %}
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm">
+                    {% if stock_detail %}
+                        <table class="table">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col">Symbol</th>
+                                <th scope="col">Company Name</th>
+                                <th scope="col">Latest Price</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Market Cap</th>
+                                <th scope="col">P/E ratio</th>
+                                <th scope="col">W52 High</th>
+                                <th scope="col">W52 Low</th>
+                                <th scope="col">Ytd Change</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <tr>
                                 <td>{{ stock_detail.symbol }}</td>
                                 <td>{{ stock_detail.companyName }}</td>
@@ -54,18 +55,28 @@
                                 <td>{{ stock_detail.peRatio }} </td>
                                 <td>$ {{ stock_detail.week52High }} </td>
                                 <td>$ {{ stock_detail.week52Low }} </td>
-                                <td>{{ stock_detail.ytdChange }} % </td>
+                                <td>{{ stock_detail.ytdChange }} %</td>
                             </tr>
-                        </tbody>
-                    </table>
-                {% else %}
-                    <h3 class="text-muted">Your stock ticker is empty</h3>
-                {% endif %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <h3 class="text-muted">Your stock ticker is empty</h3>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm">
+                    <h3 class="text-muted">Please type valid stock ticker.</h3>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+        {% endif %}
         <div class="row">
             <br/>
         </div>
+
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm">
@@ -75,7 +86,7 @@
         </div>
         {% if search_result %}
             {% if res == "StockNewsRequestError" %}
-                <h1>The stock ticker symbol is invalid, please enter valid one.</h1>
+
             {% else %}
                 {% for news in search_result %}
                     <div class="row">
@@ -101,14 +112,6 @@
                     <br/>
                 {% endfor %}
             {% endif %}
-        {% else %}
-            <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm">
-                    <h3 class="text-muted">Please type valid stock ticker.</h3>
-                </div>
-                <div class="col-sm-1"></div>
-            </div>
         {% endif %}
     </div>
 
